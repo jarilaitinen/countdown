@@ -1,7 +1,7 @@
 # Countdown Numbers Game
 
 Author: jlaitinen
-Version: 1.0.0
+Version: 1.0.1
 
 This little Python program lets you play the arithmetic game from Countdown. 
 
@@ -19,14 +19,17 @@ A valid puzzle solution could be:
 
 ## Currently implemented features
 
-As of v 1.0.0, the game:
+As of v 1.0.1, the game:
 - Allows users to pick large or small operands and generates a new puzzle.
 - Verifies that user input contains only integers from the puzzle set, allowed operators and parentheses, and that the number of operands in the user entry is not greater than the number in the puzzle set. Displays an error message if the input is invalid.
 - After verifying the validity of the user input, evaluates the expression and checks if it matches the target. Displays a win message if the solution is correct and an error message if the expression does not evaluate to the target.
+- Game ends automatically after 10 failed attempts!
+- Quit (q), reset (r) or get instructions (h) at any time.
 
-## To-do features
 
-- Quit and reset functions
+## To-do
+
+- Refactor git
 - Find all possible solutions to the generated puzzle; eliminate impossible puzzles. Show alternate solutions after quit or solve.
 - Give an option for hint after a failed attempt (in the format of two operands + operator from a valid solution)
 - Improve UI

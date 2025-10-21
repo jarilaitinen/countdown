@@ -3,7 +3,7 @@
 Author: jlaitinen
 Version: 1.0.1
 
-This little Python program lets you play the arithmetic game from Countdown. 
+This little Python program lets you play the arithmetic game from Countdown. I'm learning Python after being primarily a JS/TS and Wordpress developer - if you are experienced with Python or game development please feel free to suggest improvements! 
 
 ## Game rules
 
@@ -29,8 +29,11 @@ As of v 1.0.1, the game:
 
 ## To-do
 
-- Refactor git
+- Refactor, eliminate duplicated input() calls and “while‑inside‑while” spaghetti from game loop, improve switching between game states (pick vs solve)
 - Find all possible solutions to the generated puzzle; eliminate impossible puzzles. Show alternate solutions after quit or solve.
 - Give an option for hint after a failed attempt (in the format of two operands + operator from a valid solution)
 - Improve UI
 - Perhaps allow for a user name and track solve time and number of attempts
+
+## Changelog
+

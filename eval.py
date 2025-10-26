@@ -12,8 +12,6 @@ import ast
 import operator
 from typing import Any, Callable, Dict, List, Set
 
-allowed_ints = []
-
 # Only allow addition, subtraction, multiplication and division with no remainder
 _ALLOWED_OPS = {
     ast.Add: operator.add,
@@ -32,13 +30,16 @@ _OP_MAP: Dict[type, Callable[[int, int], int]] = {
 
 # Validator class - check node for disallowed characters
 class _Validator(ast.NodeVisitor):
+# Allow safe_init to pass the set of allowed integers
+    def __init__(self, allowed_numbers: set[int]) -> None:
+        self.allowed_numbers = allowed_numbers
 # Validate constants
     def visit_Constant(self, node: ast.Constant) -> None:
 # Don't allow non-integers!
         if not isinstance(node.value, int):
             raise ValueError("Only integers in the puzzle set are allowed.")
 # Don't allow integers not in allowed_ints!
-        if node.value not in allowed_ints:
+        if node.value not in self.allowed_numbers:
             raise ValueError(f"The number {node.value} is not part of the puzzle set.")
 # Validate binops
     def visit_BinOp(self, node: ast.BinOp) -> None:
@@ -77,7 +78,7 @@ def _evaluate(node: ast.AST) -> int:
     raise RuntimeError(f"Unexpected node type during evaluation: {type(node).__name__}")
 
 # Evaluate the user's input
-def safe_eval(expr: str, picks: list[int]) -> int:
+def safe_eval(expr: str, picks: List[int]) -> int:
     """
     Evaluate *expr* safely.
     • Only integer literals from ALLOWED_NUMBERS may appear.
@@ -85,17 +86,16 @@ def safe_eval(expr: str, picks: list[int]) -> int:
     • Parentheses are allowed; any other syntax raises ValueError.
     Returns the integer result.
     """
-    # Update the allowed_ints set with the user picks
-    for pick in picks:
-        allowed_ints.append(pick)
-    print(allowed_ints)
+
+    # Make an immutable set with the user picks
+    allowed_set = set(picks)
     # Parse the expression (throws SyntaxError if it isn’t valid Python)
     try:
         tree = ast.parse(expr, mode="eval")
     except SyntaxError as exc:
         raise ValueError(f"Syntax error: {exc.msg}")
     # Validate the tree
-    _Validator().visit(tree)
+    _Validator(allowed_set).visit(tree)
     # Count how many numeric literals were used (enforce 2‑to‑6 rule)
     # Counter class increments self.count every time it encounters a node of type int
     class _Counter(ast.NodeVisitor):

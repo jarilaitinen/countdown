@@ -21,18 +21,18 @@ def handle_control(command: str, game: Game) -> bool:
         return True
     if cmd == "h":
         print("""\n--- HELP -------------------------------------------------
-        Pick numbers:
-            L – add a random *large* number (25, 50, 75, 100)
-            S – add a random *small* number (1‑10)
+Pick numbers:
+    L – add a random *large* number (25, 50, 75, 100)
+    S – add a random *small* number (1‑10)
 
-        When you have 6 numbers, a *target* (1‑999) is shown.
-        Enter a mathematical expression that uses **only** those numbers
-        (and the operators +, -, *, //).  Parentheses are allowed.
+When you have 6 numbers, a *target* (1‑999) is shown.
+Enter a mathematical expression that uses **only** those numbers
+(and the operators +, -, *, //).  Parentheses are allowed.
 
-        Special commands:
-            r – reset the game
-            q – quit
-        -------------------------------------------------------------------""")
+Special commands:
+    r – reset the game
+    q – quit
+-------------------------------------------------------------------""")
         return True
     # DEBUG COMMANDS
     # Show current puzzle variables

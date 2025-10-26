@@ -1,7 +1,7 @@
 # Countdown Numbers Game
 
 Author: jlaitinen
-Version: 1.0.1
+Version: 1.0.2
 
 This little Python program lets you play the arithmetic game from Countdown. I'm learning Python after being primarily a JS/TS and Wordpress developer - if you are experienced with Python or game development please feel free to suggest improvements! 
 
@@ -19,21 +19,22 @@ A valid puzzle solution could be:
 
 ## Currently implemented features
 
-As of v 1.0.1, the game:
+As of v 1.0.2:
 - Allows users to pick large or small operands and generates a new puzzle.
 - Verifies that user input contains only integers from the puzzle set, allowed operators and parentheses, and that the number of operands in the user entry is not greater than the number in the puzzle set. Displays an error message if the input is invalid.
 - After verifying the validity of the user input, evaluates the expression and checks if it matches the target. Displays a win message if the solution is correct and an error message if the expression does not evaluate to the target.
 - Game ends automatically after 10 failed attempts!
+- Now tracks how many puzzles you've successfully solved in the allowed attempts. When you quit, it shows you your score!
 - Quit (q), reset (r) or get instructions (h) at any time.
 
 
 ## To-do
 
-- Refactor, eliminate duplicated input() calls and “while‑inside‑while” spaghetti from game loop, improve switching between game states (pick vs solve)
 - Find all possible solutions to the generated puzzle; eliminate impossible puzzles. Show alternate solutions after quit or solve.
 - Give an option for hint after a failed attempt (in the format of two operands + operator from a valid solution)
-- Improve UI
-- Perhaps allow for a user name and track solve time and number of attempts
+- Make a slightly fancier UI 
+- Perhaps allow for a user name and track solve time and number of attempts... maybe allow exporting these details to CSV?
 
 ## Changelog
 
+__26.10.2025: v1.0.2__ Refactored game loop, eliminated duplicated input() calls and nested whiles from game loop, improved switching between game states (pick vs solve) and removed the global list variable from eval.py. Added an expanded instruction guide behind the h command.

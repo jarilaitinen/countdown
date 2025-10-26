@@ -1,5 +1,5 @@
 {
-    "version": "0.2.0",
+    "version": "1.0.2",
     "configurations": [
         {
             "name": "Run with argument",
@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": ["Erik"]
+            "args": ["Spam"]
         },
         {
             "name": "Run",

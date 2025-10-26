@@ -1,6 +1,6 @@
 # Countdown Numbers Game
 
-Author: jlaitinen
+Author: jarilaitinen
 Version: 1.0.2
 
 This little Python program lets you play the arithmetic game from Countdown. I'm learning Python after being primarily a JS/TS and Wordpress developer - if you are experienced with Python or game development please feel free to suggest improvements! 
@@ -33,7 +33,8 @@ As of v 1.0.2:
 - Find all possible solutions to the generated puzzle; eliminate impossible puzzles. Show alternate solutions after quit or solve.
 - Give an option for hint after a failed attempt (in the format of two operands + operator from a valid solution)
 - Make a slightly fancier UI 
-- Perhaps allow for a user name and track solve time and number of attempts... maybe allow exporting these details to CSV?
+- Perhaps allow for a user name and timer to track solve time and number of attempts... allow exporting these details to CSV
+- Optional Clock Mode with animated clock and time limit for the masochistic
 
 ## Changelog
 

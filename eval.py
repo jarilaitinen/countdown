@@ -10,6 +10,8 @@
 """
 import ast
 import operator
+from collections import Counter
+from typing import Counter as CounterType, Set
 from typing import Any, Callable, Dict, List, Set
 
 # Only allow addition, subtraction, multiplication and division with no remainder
@@ -28,28 +30,37 @@ _OP_MAP: Dict[type, Callable[[int, int], int]] = {
     ast.FloorDiv: operator.floordiv,
 }
 
-# Validator class - check node for disallowed characters
+# Validator class - check node for disallowed characters and other rule-breaky stuff
 class _Validator(ast.NodeVisitor):
-# Allow safe_init to pass the set of allowed integers
-    def __init__(self, allowed_numbers: set[int]) -> None:
+
+# Allow safe_init to pass the set of allowed integers and make a counter to track 
+# number of occurrences in the user input
+    def __init__(self, allowed_numbers: CounterType[int]) -> None:
         self.allowed_numbers = allowed_numbers
+        self.used_numbers: Counter[int] = Counter()
 # Validate constants
     def visit_Constant(self, node: ast.Constant) -> None:
-# Don't allow non-integers!
-        if not isinstance(node.value, int):
+        if not isinstance(node.value, int): # Don't allow non-integers!
             raise ValueError("Only integers in the puzzle set are allowed.")
-# Don't allow integers not in allowed_ints!
-        if node.value not in self.allowed_numbers:
-            raise ValueError(f"The number {node.value} is not part of the puzzle set.")
+        val = node.value
+        if val not in self.allowed_numbers: # Don't allow integers not in allowed_ints!
+            raise ValueError(f"The number {val} is not part of the puzzle set.")
+        self.used_numbers[val] += 1
+        if self.used_numbers[val] > self.allowed_numbers[val]: # Don't allow reuse!
+            raise ValueError(
+                f"The number {val} appears {self.used_numbers[val]} times, "
+                f"but it is only available {self.allowed_numbers[val]}"
+            )
 # Validate binops
     def visit_BinOp(self, node: ast.BinOp) -> None:
-# Don't allow operators not in _ALLOWED_OPS!
-        if type(node.op) not in _ALLOWED_OPS:
+        if type(node.op) not in _ALLOWED_OPS: # Don't allow operators not in _ALLOWED_OPS!
             raise ValueError(f"Operator {type(node.op).__name__} not allowed.")
         self.generic_visit(node)
+
 # The top‑level Expression node (produced by ast.parse(mode='eval'))
     def visit_Expression(self, node: ast.Expression) -> None:
         self.generic_visit(node)
+        
 # Disallow anything else!
     def generic_visit(self, node: ast.AST) -> None:
         if isinstance(node, ast.operator):
@@ -88,14 +99,14 @@ def safe_eval(expr: str, picks: List[int]) -> int:
     """
 
     # Make an immutable set with the user picks
-    allowed_set = set(picks)
+    allowed_counter = Counter(picks)
     # Parse the expression (throws SyntaxError if it isn’t valid Python)
     try:
         tree = ast.parse(expr, mode="eval")
     except SyntaxError as exc:
         raise ValueError(f"Syntax error: {exc.msg}")
     # Validate the tree
-    _Validator(allowed_set).visit(tree)
+    _Validator(allowed_counter).visit(tree)
     # Count how many numeric literals were used (enforce 2‑to‑6 rule)
     # Counter class increments self.count every time it encounters a node of type int
     class _Counter(ast.NodeVisitor):
@@ -120,18 +131,3 @@ def safe_eval(expr: str, picks: List[int]) -> int:
         raise ValueError("Division by zero is not allowed.")
 
     return result
-
-
-"""
-CHECKS
----
-print(safe_eval("2*8-2"))  # → 14
-print(safe_eval("5+9"))     # → 14
-print(safe_eval("2*3+3+5")) # → 14
-print(safe_eval("2*(3+8)+5")) # 27
-print(safe_eval("2-3+(5*8)-9+6")) # 36
-print(safe_eval("2*3+7+5")) # fail - not in puzzle set
-print(safe_eval("2-3+(5*8)-9+6+3")) # fail - too many operands
-print(safe_eval("dfklj_")) # fail - invalid syntax
-"""
-

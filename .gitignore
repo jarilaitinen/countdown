@@ -1,0 +1,27 @@
+# Python byte‑code / caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.venv/
+ENV/
+
+# PyInstaller artefacts
+build/
+dist/
+*.spec
+
+# macOS Finder metadata
+.DS_Store
+
+# Logs / temporary files
+*.log
+*.tmp
+
+# IDE / editor folders (adjust to what you use)
+.vscode/
+.idea/
+*.swp
